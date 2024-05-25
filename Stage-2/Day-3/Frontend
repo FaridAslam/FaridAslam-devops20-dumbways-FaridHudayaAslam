@@ -1,0 +1,80 @@
+pipeline {
+   agent any
+   environment{
+       credential = 'sshkeyfarid'
+       server = 'farid18@103.127.134.82'
+       directory = '/home/farid18/housy-frontend'
+       branch = 'main'
+       service = 'frontend'
+       tag = 'latest'
+       image = 'faridaslam/housy-fe'
+   }
+   stages {
+       stage('Pull code dari repository'){
+         steps {
+            sshagent([credential]) {
+                sh '''ssh -o StrictHostKeyChecking=no ${server} << EOF
+                cd ${directory}
+                git pull origin ${branch}
+                exit
+                EOF'''
+               }
+           }
+       }
+       stage('Building application') {
+         steps {
+            sshagent([credential]) {
+                sh '''ssh -o StrictHostKeyChecking=no ${server} << EOF
+                cd ${directory}
+                docker compose up -d database
+                docker build -t ${image}:${tag}
+                exit
+                EOF'''
+               }
+           }
+       }
+       stage('Testing application') {
+         steps {
+            sshagent([credential]) {
+                sh '''ssh -o StrictHostKeyChecking=no ${server} << EOF
+                cd ${directory}
+                docker run --name test_fe -p 3000:3000 -d ${image}:${tag}
+                wget --spider localhost:3000
+                docker stop test_fe
+                docker rm test_fe
+                exit
+                EOF'''
+               }
+           }
+       }
+       stage('Deploy aplikasi on top docker'){
+         steps {
+            sshagent([credential]) {
+                sh '''ssh -o StrictHostKeyChecking=no ${server} << EOF
+                sed -i '22c\\ image: ${image}:${tag}' docker-compose.yaml
+                docker compose up -d
+                cd ${directory}
+                exit
+                EOF'''
+               }
+           }
+       }
+       stage('Push image to docker hub'){
+         steps {
+            sshagent([credential]) {
+                sh '''ssh -o StrictHostKeyChecking=no ${server} << EOF
+                cd ${directory}
+                docker push ${image}:${tag}
+                exit
+                EOF'''
+               }
+           }
+       }
+       stage('send notification to discord'){
+         steps {
+            discordSend description: "frontend-team1 notify", footer: "team1 notify", link:
+env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "https://discord.com/api/webhooks/1240153059674423326/XjUW5UpIS4XJoCmyK-6amPN7Ap3H_cfgKf2L2-SpsHmGv1fx3g-Kr6Xg0BnWYeVP_ZYB"
+           } 
+        }
+    }
+}

@@ -1,0 +1,17 @@
+Perbedaan CLI dan GUI
+
+Pengertian CLI :
+
+- CLI singkatan dari Command Line Interface adalah sebuah sistem yang memasukan perintah melalui terminal. dan hanya keluar teks saja di layar.
+
+Pengertian GUI :
+
+- GUI singkatan dari Graphic User Interface adalah sebuah sistem yang menggunakan User Grafis dalam berinteraksi dengan komputer. tidak seperti CLI, GUI lebih interaktif namun lebih lambat dalam pengoperasian nya.
+
+Perbedaan CLI dan GUI :
+
+- GUI                                                                                              - CLI
+- Lebih cepat dan efisien                                                                          - Interaktif namun tidak lebih cepat dari CLI
+- Tampilan hanya teks dan membosankan                                                              - Penggunaan lebih user friendly untuk pemula
+- Tidak bisa custom tema saat sedang menjalankan sistem                                            - Bisa ubah desain
+- Tidak terlalu memakan banyak memori                                                              - Boros RAM
