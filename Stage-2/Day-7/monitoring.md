@@ -299,6 +299,16 @@ Dalam rumus ini:
 
 Rumus ini dapat diartikan sebagai 100 dikurangi dengan persentase rata-rata waktu CPU dalam mode 'idle' dalam satu jam terakhir. Semakin tinggi nilai hasil rumus, semakin sedikit waktu CPU yang dihabiskan dalam mode 'idle', yang mungkin mengindikasikan tingkat beban CPU yang lebih tinggi.
 
+   - node_cpu_seconds_total{mode="idle"}[1h]: Ini memilih total detik CPU yang dihabiskan dalam mode siaga untuk setiap instance selama satu jam terakhir.
+
+   - irate(...): Fungsi irate menghitung laju perubahan penghitung per detik pada rentang yang ditentukan (1 jam dalam kasus ini). Ini memberi kita tingkat di mana CPU dalam keadaan idle.
+
+   - avg by(instance)(...): Ini menghitung rata-rata tingkat CPU idle untuk setiap instance.
+
+   - (...)*100: Ini mengubah tingkat CPU menganggur menjadi persentase.
+
+   - 100 - (...): Ini mengurangi persentase CPU yang menganggur dari 100%, sehingga menghasilkan persentase pemanfaatan CPU.
+
 #### 2. RAM Usage
 ![image](./images/RAM.png)
 masukkan promql berikut
@@ -306,6 +316,25 @@ masukkan promql berikut
  100  *  (  1  -  ((avg_over_time(node_memory_MemFree_bytes[10m])  +  avg_over_time(node_memory_Cached_bytes[10m])+  avg_over_time(node_memory_Buffers_bytes[10m]))  /  avg_over_time(node_memory_MemTotal_bytes[10m])))
 ```
 Rumus ini dapat diartikan sebagai persentase penggunaan memori terhadap total kapasitas memori yang tersedia dalam interval waktu 10 menit terakhir. Semakin tinggi nilai hasil rumus, semakin tinggi penggunaan memori terhadap kapasitas total yang tersedia.
+
+Kueri Prometheus yang disediakan menghitung persentase memori yang digunakan selama 10 menit terakhir dengan mempertimbangkan memori bebas, memori cache, dan memori buffer relatif terhadap total memori. Mari kita uraikan langkah demi langkah:
+
+   - avg_over_time(node_memory_MemFree_bytes[10m]): Ini menghitung rata-rata memori bebas dalam byte selama 10 menit terakhir.
+
+   -  avg_over_time(node_memory_Cached_bytes[10m]): Ini menghitung rata-rata memori cache dalam byte selama 10 menit terakhir.
+
+   - avg_over_time(node_memory_Buffers_bytes[10m]): Ini menghitung rata-rata memori buffer dalam byte selama 10 menit terakhir.
+  
+   - avg_over_time(node_memory_MemTotal_bytes[10m]): Ini menghitung total rata-rata memori dalam byte selama 10 menit terakhir.
+
+Selanjutnya komponen-komponen tersebut digabungkan sebagai berikut:
+
+   - avg_over_time(node_memory_MemFree_bytes[10m]) + avg_over_time(node_memory_Cached_bytes[10m]) + avg_over_time(node_memory_Buffers_bytes[10m]): Ini menjumlahkan rata-rata memori bebas, cache, dan buffer selama 10 menit terakhir.
+
+   - (...) / avg_over_time(node_memory_MemTotal_bytes[10m]): Ini membagi jumlah dengan total memori rata-rata untuk mendapatkan pecahan dari total memori yang bebas, di-cache, atau di-buffer.
+
+   - 1 - (...): Ini menghitung sebagian kecil dari total memori yang digunakan (yaitu, tidak gratis, di-cache, atau di-buffer).
+    100 * (...): Ini mengubah sebagian kecil memori yang digunakan menjadi persentase.
 
 #### 3. Disk Usage
 
