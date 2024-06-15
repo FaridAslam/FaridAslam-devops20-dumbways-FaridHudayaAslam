@@ -75,7 +75,7 @@ setup firewall dilakukan di ansible dengan membuat file ```firewall.yml```
 ---
 - become: true
   gather_facts: false
-  hosts: gateway
+  hosts: all
   tasks:
     - name: install firewall
       apt:
@@ -102,6 +102,11 @@ setup firewall dilakukan di ansible dengan membuat file ```firewall.yml```
       - 9090
       - 9100
       - 8080
+      - 6443
+      - 6444
+      - 30300
+      - 30500
+      - 30432
     - name: enable ufw
       community.general.ufw:
         state: reloaded
