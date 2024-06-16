@@ -44,6 +44,7 @@
    - build
    - test
    - push
+   - pull docker registry
 
  variables:
    USER: 'finaltask-farid'
@@ -134,6 +135,26 @@
    script : 
      - ssh -o StrictHostKeyChecking=no $USER@$IP -p $SSH_PORT "docker push $IMAGE && exit"
      - echo "Push image to registry success!"
+
+Pulling image:
+   stage : pull docker registry
+   image: docker
+   services:
+     - docker:dind
+   before_script:
+     - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+     - mkdir -p ~/.ssh
+     - touch ~/.ssh/id_rsa
+     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+     - chmod 600 ~/.ssh/id_rsa
+     - echo -e "Host *\nStrictHostKeyChecking no\n" > ~/.ssh/config
+     - eval "$(ssh-agent -s)"
+     - ssh-add ~/.ssh/id_rsa
+
+
+   script :
+     - ssh -o StrictHostKeyChecking=no $USER@$IP -p $SSH_PORT "docker pull registry.farid.studentdumbways.my.id:5000/faridaslam/dmfrontend:4/0  && exit"
+     - echo "pulling image success!"
 ```
 
 ![image](./images/fegitlabhasil.png)
@@ -238,7 +259,7 @@
      - ssh -o StrictHostKeyChecking=no $USER@$IP -p $SSH_PORT "docker push $IMAGE && exit"
      - echo "Push image to registry success!"
 
-Pulling code:
+Pulling image:
    stage : pull docker registry
    image: docker
    services:
@@ -277,6 +298,7 @@ Pulling code:
    - build
    - test
    - push
+   - pull docker registry
 
  variables:
    USER: 'finaltask-farid'
@@ -367,6 +389,26 @@ Pulling code:
    script : 
      - ssh -o StrictHostKeyChecking=no $USER@$IP -p $SSH_PORT "docker push $IMAGE && exit"
      - echo "Push image to registry success!"
+
+Pulling image:
+   stage : pull docker registry
+   image: docker
+   services:
+     - docker:dind
+   before_script:
+     - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+     - mkdir -p ~/.ssh
+     - touch ~/.ssh/id_rsa
+     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+     - chmod 600 ~/.ssh/id_rsa
+     - echo -e "Host *\nStrictHostKeyChecking no\n" > ~/.ssh/config
+     - eval "$(ssh-agent -s)"
+     - ssh-add ~/.ssh/id_rsa
+
+
+   script :
+     - ssh -o StrictHostKeyChecking=no $USER@$IP -p $SSH_PORT "docker pull registry.farid.studentdumbways.my.id:5000/faridaslam/dmfrontend:4/0  && exit"
+     - echo "pulling image success!"
 ```
 
 ![image](./images/begitlabhasil.png)
@@ -379,13 +421,14 @@ Pulling code:
    - build
    - test
    - push
+   - pull docker registry
 
  variables:
    USER: 'finaltask-farid'
    IP: '103.127.134.82'
    DIREKTORI: '/home/finaltask-farid/be-dumbmerch'
    SSH_PORT: '1234'
-   BRANCH: 'Production'
+   BRANCH: 'Staging'
    IMAGE: 'registry.farid.studentdumbways.my.id/dmbackend:4.0'
 
  Pulling code:
@@ -469,6 +512,26 @@ Pulling code:
    script : 
      - ssh -o StrictHostKeyChecking=no $USER@$IP -p $SSH_PORT "docker push $IMAGE && exit"
      - echo "Push image to registry success!"
+
+Pulling image:
+   stage : pull docker registry
+   image: docker
+   services:
+     - docker:dind
+   before_script:
+     - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+     - mkdir -p ~/.ssh
+     - touch ~/.ssh/id_rsa
+     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+     - chmod 600 ~/.ssh/id_rsa
+     - echo -e "Host *\nStrictHostKeyChecking no\n" > ~/.ssh/config
+     - eval "$(ssh-agent -s)"
+     - ssh-add ~/.ssh/id_rsa
+
+
+   script :
+     - ssh -o StrictHostKeyChecking=no $USER@$IP -p $SSH_PORT "docker pull registry.farid.studentdumbways.my.id:5000/faridaslam/dmfrontend:4/0  && exit"
+     - echo "pulling image success!"
 ```
 
 ![image](./images/begitlabhasil.png)
