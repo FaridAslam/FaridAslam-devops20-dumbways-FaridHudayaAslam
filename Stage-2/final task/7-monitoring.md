@@ -290,8 +290,38 @@ container_cpu_usage_seconds_total adalah metrik yang mewakili total waktu CPU ya
 
 Hasil dari kueri ini akan berupa tabel dengan baris yang setiap barisnya berhubungan dengan wadah unik yang diidentifikasi berdasarkan label namanya, dan nilai di setiap baris mewakili total detik CPU yang digunakan oleh wadah tersebut selama 5 menit terakhir.
 
+#### 6. Network I/O Nginx
+![image](./images/nginxio.png)
 
-### 6. Membuat Alert
+```
+ sum by (name) (rate(container_network_receive_bytes_total{name="nginx-farid"} [1m] ) ) *  sum by (name) (rate(container_network_transmit_bytes_total{name="nginx-farid"} [1m] ) )
+```
+
+Rumus PromQL (Prometheus Query Language) yang diberikan melakukan penghitungan berdasarkan metrik jaringan dari kontainer yang bernama nginx-farid. Berikut adalah penjelasan dari setiap bagian rumus tersebut:
+
+- rate(container_network_receive_bytes_total{name="nginx-farid"}[1m]):
+        container_network_receive_bytes_total{name="nginx-farid"}: Metrik ini mengumpulkan total byte yang diterima oleh kontainer dengan nama nginx-farid.
+		
+- [1m]: Interval waktu jendela untuk rate calculation adalah 1 menit.
+        rate(...): Fungsi ini menghitung laju perubahan (rate of change) per detik dari metrik dalam interval waktu yang ditentukan (1 menit dalam hal ini).
+
+- sum by (name) (...):
+        sum by (name): Fungsi ini mengelompokkan hasil berdasarkan label name dan menjumlahkan nilai-nilainya.
+
+- rate(container_network_transmit_bytes_total{name="nginx-farid"}[1m]):
+        container_network_transmit_bytes_total{name="nginx-farid"}: Metrik ini mengumpulkan total byte yang dikirim oleh kontainer dengan nama nginx-farid.
+
+- [1m]: Interval waktu jendela untuk rate calculation adalah 1 menit.
+        rate(...): Fungsi ini menghitung laju perubahan (rate of change) per detik dari metrik dalam interval waktu yang ditentukan (1 menit dalam hal ini).
+
+- Mengalikan hasil kedua sum by (name):
+        Setelah menghitung rate dari byte yang diterima dan dikirim dalam interval 1 menit, hasilnya kemudian dikalikan. Ini berarti kita mengalikan laju penerimaan byte per detik dengan laju pengiriman byte per detik untuk kontainer nginx-farid.
+
+Secara keseluruhan, rumus ini menghitung laju perubahan per detik dari jumlah byte yang diterima dan dikirim oleh kontainer nginx-farid, kemudian mengalikannya. Interpretasi hasil dari operasi ini mungkin tergantung pada konteks penggunaan, namun secara umum ini bisa memberikan pandangan tentang aktivitas jaringan kontainer tersebut dalam hal penerimaan dan pengiriman data.
+
+
+
+## Membuat Alert
 
 ##### 1. menambahkan contact poin
 
