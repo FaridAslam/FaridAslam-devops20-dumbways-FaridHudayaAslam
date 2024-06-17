@@ -266,6 +266,12 @@ scrape_configs:
           - 103.127.134.82:9100
           - 103.127.132.134:9100
 
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets:
+          - 103.127.134.82:8080
+          - 103.127.132.134:8080
+
 ```
 
 buat file install-prometheusgrafana.yml dan konfigurasi seperti berikut

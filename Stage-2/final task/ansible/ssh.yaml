@@ -1,0 +1,21 @@
+- hosts: all
+  become: true
+  tasks:
+
+  - name: Change port SSH
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      state: present
+      regexp: 'Port 22'
+      line: 'Port 1234'
+
+  - name: UFW - Allow SSH connections
+    community.general.ufw:
+      rule: allow
+      port: '1234'
+
+
+  - name: UFW - Enable and deny by default
+    community.general.ufw:
+      state: enabled
+      default: deny 

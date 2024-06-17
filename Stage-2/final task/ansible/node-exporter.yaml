@@ -1,0 +1,23 @@
+- become: true
+  gather_facts: false
+  hosts: all
+  tasks:
+
+    - name: "buat directory"
+      file:
+        path: /home/finaltask-farid/monitoring
+        state: directory
+        owner: finaltask-farid
+        group: finaltask-farid
+        mode: 0700
+
+    - name: "copy docker compose"
+      copy:
+        src: /home/farid/monitoring/docker-compose-exporter.yaml
+        dest: /home/finaltask-farid/monitoring/docker-compose-exporter.yaml
+        owner: finaltask-farid
+        group: finaltask-farid
+        mode: 0664
+
+    - name: "deploy"
+      shell: cd /home/finaltask-farid/monitoring/ && docker compose -f docker-compose-exporter.yaml up -d

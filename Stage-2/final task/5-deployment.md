@@ -180,7 +180,7 @@ services:
 docker compose up -d
 ```
 
--  Membuat file ```docker-compose-fe.yml``` di directory fe-dumbmerch
+-  Membuat file ```docker-compose.yml``` di directory fe-dumbmerch
 ```
 services:
   frontend:
@@ -193,8 +193,24 @@ services:
 
 -  Menjalankan docker compose database
 ```
-docker compose -f docker-compose-deployment.yaml up -d
+docker-compose up -d
+`
+
+- coba login psql lewat terminal, apakah sudah ada database nya atau belum :
 ```
+psql -h 103.127.134.82 -p 30432 -U farid -d dumbmerch
+```
+lalu ubah user yg sudah di register menjadi admin :
+```
+SELECT * FROM users;
+```
+lalu ketik command :
+```
+UPDATE users SET status = 'admin' WHERE id = 2;
+```
+![image](./images/ahahaha2.png)
+![image](./images/ahahaha1.png)
+
 
 Aplikasi Berhasil di deploy dan dapat berjalan dengan lancar bisa melakukan login dan register
 ![image](./images/felogin.png)

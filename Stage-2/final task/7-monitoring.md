@@ -328,6 +328,29 @@ Secara keseluruhan, rumus ini menghitung laju perubahan per detik dari jumlah by
 ![image](./images/contakpoint.png)
 
 ##### 2. Membuat template telegram
+
+```
+{{ define "mymessage" }}
+{{ if gt (len .Alerts.Firing) 0 }}
+{{ len .Alerts.Firing }} firing:
+{{ range .Alerts.Firing }} {{ template "myalert" .}} {{ end }}
+{{ end }}
+{{ if gt (len .Alerts.Resolved) 0 }}
+{{ len .Alerts.Resolved }} resolved:
+{{ range .Alerts.Resolved }} {{ template "myalert" .}} {{ end }}
+{{ end }}
+{{ end }}
+
+{{ define "myalert" }}
+Labels: {{ range .Labels.SortedPairs }}
+- {{ .Name }}: {{ .Value }} {{ end }}
+
+Annotation: {{ if gt (len .Annotations) 0 }} {{ range .Annotations.SortedPairs }}
+- {{ .Name }}: {{ .Value }} {{ end }} {{ end }}
+
+{{ if gt (len .DashboardURL ) 0 }} Go to dashboard: {{ .DashboardURL }}
+{{ end }} {{ end }}
+```
 ![image](./images/variable%20template.png)
 
 ##### 3. membuat bot di telegram

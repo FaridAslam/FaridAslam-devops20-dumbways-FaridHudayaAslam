@@ -1,0 +1,32 @@
+services:
+  database:
+    image: mysql:5.7
+    container_name: database
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: farid
+      MYSQL_DATABASE: housy
+      MYSQL_USER: farid
+      MYSQL_PASSWORD: farid
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+    networks:
+      - team1
+
+  backend:
+    image: faridaslam/backendhousy-baru
+    container_name: housy-be
+    restart: always
+    stdin_open: true
+    ports:
+      - '5000:5000'
+    depends_on:
+      - database
+    networks:
+      - team1
+
+networks:
+  team1:
+

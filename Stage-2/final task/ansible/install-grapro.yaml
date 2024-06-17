@@ -1,0 +1,29 @@
+- become: true
+  gather_facts: false
+  hosts: 103.127.134.82
+  tasks:
+
+    - name: buat dir
+      file:
+        path: /home/{{username}}/monitoring
+        state: directory
+        owner: "{{username}}"
+        group: "{{username}}"
+        mode: 0700
+
+    - name: "copy docker compose"
+      copy:
+        src: /home/farid/monitoring/docker-compose.yml
+        dest: /home/{{username}}/monitoring/docker-compose.yml
+        owner: "{{username}}"
+        group: "{{username}}"
+
+    - name: "copy prometheus.yaml"
+      copy:
+        src: /home/farid/monitoring/prometheus.yml
+        dest: /home/{{username}}/monitoring/prometheus.yml
+        owner: "{{username}}"
+        group: "{{username}}"
+
+    - name: "deploy"
+      shell: cd /home/{{username}}/monitoring/ && docker compose up -d

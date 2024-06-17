@@ -1,0 +1,22 @@
+- hosts: gateway
+  become: true
+  tasks:
+
+    - name: "buat dir "
+      file:
+        path: /home/serlin1/monitoring
+        state: directory
+        owner: serlin1
+        group: serlin1
+        mode: 0700
+
+    - name: "upload docker compose"
+      copy:
+        src: /home/farid/monitoring/docker-compose-frontend.yaml
+        dest: /home/serlin1/monitoring/docker-compose-frontend.yaml
+        owner: serlin1
+        group: serlin1
+        mode: 0664
+
+    - name: "jalankan docker compose tersebut"
+      shell: cd /home/serlin1/monitoring/ && docker compose -f docker-compose-frontend.yaml up -d

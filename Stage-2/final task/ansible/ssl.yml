@@ -1,0 +1,63 @@
+- become: true
+  gather_facts: false
+  hosts: 103.127.132.134
+  tasks:
+
+
+    - name: "buat dir webserver"
+      file:
+        path: /home/{{username}}/webserver
+        state: directory
+        owner: "{{username}}"
+        group: "{{username}}"
+        mode: 0700
+
+    - name: "buat dir certbot"
+      file:
+        path: /home/{{username}}/webserver/certbot
+        state: directory
+        owner: "{{username}}"
+        group: "{{username}}"
+        mode: 0700
+
+    - name: "buat dir nginx"
+      file:
+        path: /home/{{username}}/webserver/nginx/
+        state: directory
+        owner: "{{username}}"
+        group: "{{username}}"
+        mode: 0700
+
+    - name: "buat dir conf"
+      file:
+        path: /home/{{username}}/webserver/nginx/conf
+        state: directory
+        owner: "{{username}}"
+        group: "{{username}}"
+        mode: 0700
+
+    - name: "copy docker compose"
+      copy:
+        src: /home/farid/monitoring/docker-compose-webserver.yaml
+        dest: /home/{{username}}/webserver/docker-compose-webserver.yaml
+        owner: "{{username}}"
+        group: "{{username}}"
+        mode: 0700
+
+    - name: "copy nginx.conf"
+      copy:
+        src: /home/farid/monitoring/nginx.conf
+        dest: /home/{{username}}/webserver/nginx/conf/nginx.conf
+        owner: "{{username}}"
+        group: "{{username}}"
+        mode: 0664
+
+    - name: copy certbot.ini
+      copy:
+        src: /home/farid/monitoring/certbot.ini
+        dest: /home/{{username}}/webserver/certbot
+        mode: 0664
+
+
+    - name: "deploy"
+      shell: cd /home/{{username}}/webserver/ && docker compose -f docker-compose-webserver.yaml up -d

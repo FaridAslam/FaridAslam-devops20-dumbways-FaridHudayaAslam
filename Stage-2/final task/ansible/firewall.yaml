@@ -1,0 +1,35 @@
+- become: true
+  gather_facts: false
+  hosts: all
+  tasks:
+    - name: install firewall
+      apt:
+        name: ufw
+        update_cache: yes
+        state: latest
+    - name: enable ufw
+      community.general.ufw:
+        state: enabled
+        policy: allow
+    - name: rules
+      community.general.ufw:
+        rule: allow
+        proto: tcp
+        port: "{{ item }}"
+      with_items:
+      # - 22
+      # - 80
+      # - 443
+      # - 1234
+      # - 3000
+      # - 3001
+      # - 5000
+      # - 9090
+      # - 9100
+      # - 8080
+      - 6443
+      - 6444
+    - name: enable ufw
+      community.general.ufw:
+        state: reloaded
+        policy: allow

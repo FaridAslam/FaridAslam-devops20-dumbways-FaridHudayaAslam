@@ -1,0 +1,42 @@
+services:
+  webserver:
+    container_name: nginx
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: always
+    volumes:
+      - ./nginx/conf:/etc/nginx/conf.d
+      - ./certbot/www/:/var/www/certbot
+      - ./certbot/conf/:/etc/letsencrypt
+    networks:
+      - farid
+
+
+  certbot:
+    container_name: certbot
+    image: certbot/dns-cloudflare:latest
+    volumes:
+      - ./certbot/certbot.ini:/etc/letsencrypt/renewal/renewal.conf:ro
+      - ./certbot/www/:/var/www/certbot
+      - ./certbot/conf/:/etc/letsencrypt
+    command: [
+      "certonly",
+      "--non-interactive",
+      "--dns-cloudflare",
+      "--dns-cloudflare-credentials",
+      "/etc/letsencrypt/renewal/renewal.conf",
+      "--email", "adipatiaslam28@gmail.com.com",
+      "--agree-tos",
+      "--no-eff-email",
+      "--server", "https://acme-v02.api.letsencrypt.org/directory",
+      "--domain", "*.farid.studentdumbways.my.id",
+      "--domain", "farid.studentdumbways.my.id"
+    ]
+    networks:
+      - farid
+networks:
+  farid:
+
+

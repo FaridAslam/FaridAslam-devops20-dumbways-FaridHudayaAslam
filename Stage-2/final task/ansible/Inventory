@@ -1,0 +1,6 @@
+[biznet]
+103.127.134.82 ansible_user="{{ username }}" ansible_port="{{ port }}" ansible_become_pass="{{ password }}"
+103.127.132.134 ansible_user="{{ username }}" ansible_port="{{ port }}" ansible_become_pass="{{ password }}"
+
+[azure]
+20.109.10.255 ansible_user="{{ username }}" ansible_port="{{ port }}"
