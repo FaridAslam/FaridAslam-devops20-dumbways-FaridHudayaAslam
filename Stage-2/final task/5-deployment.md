@@ -196,20 +196,12 @@ services:
 docker-compose up -d
 ````
 
-- coba login psql lewat terminal, apakah sudah ada database nya atau belum :
+- coba login psql lewat terminal, apakah sudah ada database nya atau belum : ``` psql -h 103.127.134.82 -p 30432 -U farid -d dumbmerch```
+- lalu ubah user yg sudah di register menjadi admin : ```
+SELECT * FROM users;```
+lalu ketik command : ```UPDATE users SET status = 'admin' WHERE id = 2;```
 
-```
-psql -h 103.127.134.82 -p 30432 -U farid -d dumbmerch
-```
-```
-- lalu ubah user yg sudah di register menjadi admin :
-```
-SELECT * FROM users;
-```
-lalu ketik command :
-```
-UPDATE users SET status = 'admin' WHERE id = 2;
-```
+
 ![image](./images/ahahaha2.png)
 ![image](./images/ahahaha1.png)
 
