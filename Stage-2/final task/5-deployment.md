@@ -175,7 +175,7 @@ services:
 
 ```
 
--  Menjalankan docker compose database
+-  Menjalankan docker compose backend
 ```
 docker compose up -d
 ```
@@ -191,16 +191,18 @@ services:
 
 ```
 
--  Menjalankan docker compose database
+-  Menjalankan docker compose
 ```
 docker-compose up -d
-`
+````
 
 - coba login psql lewat terminal, apakah sudah ada database nya atau belum :
+
 ```
 psql -h 103.127.134.82 -p 30432 -U farid -d dumbmerch
 ```
-lalu ubah user yg sudah di register menjadi admin :
+```
+- lalu ubah user yg sudah di register menjadi admin :
 ```
 SELECT * FROM users;
 ```
