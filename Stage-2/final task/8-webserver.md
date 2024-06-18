@@ -361,28 +361,7 @@ server = https://acme-v02.api.letsencrypt.org/directory
 #!/bin/bash
 
 # Renew the certificates
-certbot certonly \
-  --non-interactive \
-  --dns-cloudflare \
-  --dns-cloudflare-credentials /etc/letsencrypt/renewal/renewal.conf \
-  --email adipatiaslam28@gmail.com \
-  --agree-tos \
-  --no-eff-email \
-  --server https://acme-v02.api.letsencrypt.org/directory \
-  --domain *.farid.studentdumbways.my.id \
-  --domain farid.studentdumbways.my.id
-
-# Tunggu beberapa saat untuk memastikan perpanjangan selesai
-sleep 10
-
-# Salin sertifikat yang diperbarui ke direktori konfigurasi nginx
-sudo cp /etc/letsencrypt/live/farid.studentdumbways.my.id/fullchain.pem ~/webserver/nginx/conf
-sudo cp /etc/letsencrypt/live/farid.studentdumbways.my.id/privkey.pem ~/webserver/nginx/conf
-
-# Tunggu sebentar sebelum memulai ulang nginx
-sleep 3
-
-# Restart the nginx container
+docker compose restart certbot
 docker restart nginx-farid
 ```
 
@@ -397,4 +376,4 @@ sudo crontab -e
 5. Tambahkan crontab expression
 ```
 0 0 */15 * *  /home/finaltask-farid/webserver/renewal.sh
-
+```
