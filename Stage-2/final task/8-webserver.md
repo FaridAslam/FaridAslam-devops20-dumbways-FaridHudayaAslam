@@ -362,7 +362,7 @@ server = https://acme-v02.api.letsencrypt.org/directory
 
 # Renew the certificates
 docker compose restart certbot
-docker restart nginx-farid
+docker compose restart nginx-farid
 ```
 
 2. Tambahkan izin untuk mengeksekusi
